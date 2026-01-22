@@ -33,3 +33,22 @@ print()
 # Motivational messages to keep user focused
 print("Every single day counts!")
 print("Today is Day 2. Let's go!")
+print()
+print("--- MILESTONE COUNTDOWN ---")
+print("Major milestones ahead:")
+print("Major milestones ahead:")
+# Create list of milestones
+milestones = [
+    ("AWS Account Creation", 5),  # Jan 27 (5 days from Jan 21)
+    ("First EC2 Deploy", 12),
+    ("VPC Project Complete", 19),
+    ("Month 1 Complete", 30),
+    ("Halfway Point", 57),
+    ("Final Month Begins", 83),
+    ("Exam Week", 110)
+]
+# Loop through milestones
+for milestone_name, days_until in milestones:
+    if days_until < days_remaining:
+        days_to_milestone = days_until
+        print(f" 🎯 {milestone_name}: {days_to_milestone} days")

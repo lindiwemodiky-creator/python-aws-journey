@@ -46,18 +46,55 @@ else:
     print()
     print("--- S3 STORAGE COSTS ---")
     # Check if S3 usage is within free tier
-    if gb_s3 < s3_free_tier:
-        # This runs if using 5 GB or less (free)
-        print(f"✅Within S3 free tier! Cost: $0.00")
-        # Calculate remaining free storage
-        s3_remaining = s3_free_tier - gb_s3
-        print(f"You have {s3_remaining} GB remaining")
+if gb_s3 < s3_free_tier:
+    # This runs if using 5 GB or less (free)
+    print(f"✅Within S3 free tier! Cost: $0.00")
+    # Calculate remaining free storage
+    s3_remaining = s3_free_tier - gb_s3
+    print(f"You have {s3_remaining} GB remaining")
+else:
+    # This runs if using more than 5 GB (costs money)
+    # Calculate how many GB are beyond free tier
+    s3_extra = gb_s3 - s3_free_tier
+    # Calculate cost for only the extra GB
+    s3_cost = s3_extra * s3_cost_per_gb
+    print(f"⚠️Exceeded S3 free tier by {s3_extra} GB")
+    # Display cost with 2 decimal places
+    print(f"S3 cost: ${s3_cost:.2f}")
+print()
+print("=" * 50)
+print("QUICK QUIZ: Test Your AWS Knowledge!")
+print("-" * 50)
+print()
+# List of questions
+questions = [
+    "How many free EC2 hours per month?"
+    "What is the free tier S3 storage limit?"
+    "How many free Lambda requests per month?"
+    "What instance type is in free tier?"
+]
+answers = [
+    "750",
+    "5",
+    "1000000",  # 1 million
+    "t2.micro"
+]
+# Loop through questions
+score = 8
+for i in range(len(questions)):
+    print(f"Question {i + 1}: {questions[i]}")
+    user_answer = input("Your answer: ")
+    if user_answer.lower() == answers[i].lower():
+        print("✅ Correct!")
+        score = score + 1
     else:
-        # This runs if using more than 5 GB (costs money)
-        # Calculate how many GB are beyond free tier
-        s3_extra = gb_s3 - s3_free_tier
-        # Calculate cost for only the extra GB
-        s3_cost = s3_extra * s3_cost_per_gb
-        print(f"⚠️Exceeded S3 free tier by {s3_extra} GB")
-        # Display cost with 2 decimal places
-        print(f"S3 cost: ${s3_cost:.2f}")
+        print(f"❌ Wrong. Answer: {answers[i]}")
+    print()
+# Display score
+print(f"Your score: {score} out of {len(questions)}")
+if score == len(questions):
+    print("🏆 Perfect! You know your AWS Free Tier!")
+elif score > len(questions) / 2:
+    print("👍 Good job! Keep learning!")
+else:
+    print("📚 Review the AWS Free Tier documentation!")
