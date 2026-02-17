@@ -10,10 +10,10 @@
 **Instance Types:** Different kinds of virtual machines  
 **Instance States:**
 - **Running:** Means the instances are working
-- **Stopped:** The instances are paused or rather they are still the and can work
+- **Stopped:** The instances are paused or rather they are still on and can work
 - **Terminated:** The instances are removed forever
 
-**Stop vs Terminate:** Stop can be seen as someone who still hopes you take them back, so they linger and are there. But Terminate understands that the relationship is over, no tack backs. They understand their worth.
+**Stop vs Terminate:** Stop can be seen as someone who still hopes you take them back, so they linger and are there. But Terminate understands that the relationship is over, no take backs. They understand their worth.
 
 ## Commands I Used
 ```bash
