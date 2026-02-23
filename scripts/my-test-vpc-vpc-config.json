@@ -1,0 +1,37 @@
+{
+  "VPCName": "my-test-vpc",
+  "Region": "us-east-1",
+  "CIDR": "10.0.0.0/16",
+  "Subnets": [
+    {
+      "Name": "my-test-vpc-public-subnet-1",
+      "CIDR": "10.0.1.0/24",
+      "AvailabilityZone": "us-east-1a",
+      "Public": true
+    },
+    {
+      "Name": "my-test-vpc-private-subnet-1",
+      "CIDR": "10.0.2.0/24",
+      "AvailabilityZone": "us-east-1b",
+      "Public": false
+    }
+  ],
+  "SecurityGroups": [
+    {
+      "Name": "my-test-vpc-web-sg",
+      "Description": "Allow HTTP and HTTPS traffic",
+      "InboundRules": [
+        {
+          "Protocol": "TCP",
+          "Port": 80,
+          "Source": "0.0.0.0/0"
+        },
+        {
+          "Protocol": "TCP",
+          "Port": 443,
+          "Source": "0.0.0.0/0"
+        }
+      ]
+    }
+  ]
+}
