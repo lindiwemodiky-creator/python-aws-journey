@@ -1,0 +1,141 @@
+{
+    "DashboardName": "ProductionMonitoring",
+    "Description": "Complete monitoring dashboard for production environment",
+    "Widgets": [
+        {
+            "type": "metric",
+            "properties": {
+                "title": "EC2 CPU Utilization",
+                "metrics": [
+                    [
+                        "AWS/EC2",
+                        "CPUUtilization",
+                        {
+                            "stat": "Average"
+                        }
+                    ]
+                ],
+                "period": 300,
+                "region": "us-east-1",
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 100,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "properties": {
+                "title": "Lambda Invocations & Errors",
+                "metrics": [
+                    [
+                        "AWS/Lambda",
+                        "Invocations",
+                        {
+                            "stat": "Sum",
+                            "color": "#1f77b4"
+                        }
+                    ],
+                    [
+                        ".",
+                        "Errors",
+                        {
+                            "stat": "Sum",
+                            "color": "#d62728"
+                        }
+                    ]
+                ],
+                "period": 300,
+                "region": "us-east-1"
+            }
+        },
+        {
+            "type": "metric",
+            "properties": {
+                "title": "RDS Database Connections",
+                "metrics": [
+                    [
+                        "AWS/RDS",
+                        "DatabaseConnections",
+                        {
+                            "stat": "Average"
+                        }
+                    ]
+                ],
+                "period": 300,
+                "region": "us-east-1",
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "label": "Connections"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "properties": {
+                "title": "S3 Request Count",
+                "metrics": [
+                    [
+                        "AWS/S3",
+                        "AllRequests",
+                        {
+                            "stat": "Sum"
+                        }
+                    ]
+                ],
+                "period": 300,
+                "region": "us-east-1"
+            }
+        },
+        {
+            "type": "alarm",
+            "properties": {
+                "title": "Active Alarms",
+                "alarms": [
+                    "arn:aws:cloudwatch:us-east-1:123456789012:alarm:HighCPUAlarm",
+                    "arn:aws:cloudwatch:us-east-1:123456789012:alarm:HighErrorRate",
+                    "arn:aws:cloudwatch:us-east-1:123456789012:alarm:LowDiskSpace"
+                ]
+            }
+        },
+        {
+            "type": "log",
+            "properties": {
+                "title": "Recent Application Errors",
+                "query": "SOURCE '/aws/lambda/ProductionFunction' | fields @timestamp, @message | filter @message like /ERROR/ | sort @timestamp desc | limit 20",
+                "region": "us-east-1"
+            }
+        }
+    ],
+    "AlarmActions": [
+        {
+            "AlarmName": "HighCPUAlarm",
+            "MetricName": "CPUUtilization",
+            "Threshold": 80,
+            "ComparisonOperator": "GreaterThanThreshold",
+            "EvaluationPeriods": 2,
+            "Actions": [
+                "arn:aws:sns:us-east-1:123456789012:operations-team",
+                "arn:aws:autoscaling:us-east-1:123456789012:scalingPolicy:12345678-1234-1234-1234-123456789012:autoScalingGroupName/production-asg:policyName/scale-up"
+            ]
+        },
+        {
+            "AlarmName": "HighErrorRate",
+            "MetricName": "Errors",
+            "Namespace": "AWS/Lambda",
+            "Threshold": 10,
+            "ComparisonOperator": "GreaterThanThreshold",
+            "EvaluationPeriods": 1,
+            "Actions": [
+                "arn:aws:sns:us-east-1:123456789012:critical-alerts"
+            ]
+        }
+    ],
+    "RefreshInterval": 60,
+    "Notes": "This dashboard monitors critical production metrics. Review daily at 9am. Alarms trigger SNS notifications to operations team and auto-scaling actions."
+}
