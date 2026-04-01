@@ -1,0 +1,24 @@
+# Simple CloudFormation template - creates an S3 bucket
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Simple S3 bucket for learning CloudFormation'
+
+Resources:
+  MyS3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub 'my-cloudformation-bucket-${AWS::AccountId}'
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Environment
+          Value: Development
+        - Key: ManagedBy
+          Value: CloudFormation
+
+Outputs:
+  BucketName:
+    Description: 'Name of the S3 bucket'
+    Value: !Ref MyS3Bucket
+  BucketArn:
+    Description: 'ARN of the S3 bucket'
+    Value: !GetAtt MyS3Bucket.Arn

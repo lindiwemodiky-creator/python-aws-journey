@@ -1,0 +1,55 @@
+# CloudFormation template - EC2 instance with security group
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'EC2 instance with web server security group'
+
+Parameters:
+  InstanceType:
+    Description: 'EC2 instance type'
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t3.small
+      - t3.medium
+
+Resources:
+  WebServerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Security group for web server'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: WebServerSG
+
+  WebServerInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: ami-0c55b159cbfafe1f0  # Amazon Linux 2 (example)
+      SecurityGroupIds:
+        - !Ref WebServerSecurityGroup
+      Tags:
+        - Key: Name
+          Value: WebServer
+        - Key: Environment
+          Value: Development
+
+Outputs:
+  InstanceId:
+    Description: 'EC2 Instance ID'
+    Value: !Ref WebServerInstance
+  SecurityGroupId:
+    Description: 'Security Group ID'
+    Value: !Ref WebServerSecurityGroup
+  PublicIP:
+    Description: 'Public IP of EC2 instance'
+    Value: !GetAtt WebServerInstance.PublicIp
